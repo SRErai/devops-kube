@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-devops-k8s-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: spring-boot-devops
+      
+  template:
+    metadata:
+      labels:
+        app: spring-boot-devops
+    spec:
+      containers:
+        - name: spring-boot-devops
+          image: shreyrai/devops-integration
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
+--- 
+apiVersion: v1 
+kind: Service
+metadata:
+  name: spring-boot-devops-k8s-service
+spec:
+  selector:
+    app: spring-boot-devops
+  ports:
+    - port: 8080
+      protocol: "TCP"
+      targetPort: 8080
+  type: NodePort
+  
+
+    
